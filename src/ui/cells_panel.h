@@ -30,13 +30,19 @@ static void drawCells(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
-static void onCellsPanelClick(int y, int x) {
-    y /= CELL_SIZE;
-    x /= CELL_SIZE;
-    bool isAlive = !isCellAlive(y, x);
-    setCellState(y, x, isAlive);
-    if (isAlive)
-        setCellHexColor(y, x, getSelectedColor());
+static void onCellsPanelDraw(int screenY, int screenX) {
+    int y = screenY / CELL_SIZE;
+    int x = screenX / CELL_SIZE;
+    if (!isCellAlive(y, x))
+        setCellState(y, x, true);
+    setCellHexColor(y, x, getSelectedColor());
+}
+
+static void onCellsPanelErase(int screenY, int screenX) {
+    int y = screenY / CELL_SIZE;
+    int x = screenX / CELL_SIZE;
+    if (isCellAlive(y, x))
+        setCellState(y, x, false);
 }
 
 #endif

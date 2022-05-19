@@ -5,19 +5,19 @@
 #include <assert.h>
 
 // cell data packing - 32 bits unsigned integer
-//  000      00000000    00000000     00000000         0000           0
-// unused    r channel   g channel    b channel  alive neighbours  is alive
+// 00000000    00000000     00000000    000          0000           0
+// r channel   g channel    b channel  unused  alive neighbours  is alive
 
 typedef uint32_t Cell;
 typedef Cell Cells[CELLS_Y_NUM][CELLS_X_NUM];
 static Cells cells;
 
 static inline uint32_t getCellHexColor(int y, int x) {
-    return cells[y][x] >> 5;
+    return cells[y][x] >> 8;
 }
 
 static inline void setCellHexColor(int y, int x, uint32_t color) {
-    cells[y][x] |= (color << 5);
+    cells[y][x] = (color << 8) | (cells[y][x] & 0xFF);
 }
 
 static inline uint8_t getCellNeighboursNum(int y, int x) {
