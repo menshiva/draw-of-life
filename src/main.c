@@ -102,11 +102,14 @@ int main(void) {
                 // quit sdl
                 goto exit;
             }
-
             switch (event.type) {
                 case SDL_KEYUP: {
                     if (event.key.keysym.sym == SDLK_g) {
                         toggleGrid();
+                        isRendererDirty = true;
+                    }
+                    else if (event.key.keysym.sym == SDLK_c) {
+                        clearCells();
                         isRendererDirty = true;
                     }
                     break;
@@ -114,20 +117,22 @@ int main(void) {
                 case SDL_MOUSEBUTTONDOWN: {
                     int y = event.button.y;
                     int x = event.button.x;
-                    if (event.button.button == SDL_BUTTON_LEFT) {
-                        if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                    if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                        // cells panel click
+                        if (event.button.button == SDL_BUTTON_LEFT) {
                             isLeftMouseBtnPressed = true;
                             onCellsPanelDraw(y, x);
                             isRendererDirty = true;
                         }
-                        else if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
-                            onColorPanelClick(x);
+                        else if (event.button.button == SDL_BUTTON_RIGHT) {
+                            isRightMouseBtnPressed = true;
+                            onCellsPanelErase(y, x);
                             isRendererDirty = true;
                         }
                     }
-                    else if (event.button.button == SDL_BUTTON_RIGHT && y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
-                        isRightMouseBtnPressed = true;
-                        onCellsPanelErase(y, x);
+                    else if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH && event.button.button == SDL_BUTTON_LEFT) {
+                        // color panel click
+                        onColorPanelClick(x);
                         isRendererDirty = true;
                     }
                     break;

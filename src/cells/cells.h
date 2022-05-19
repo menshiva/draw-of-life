@@ -57,4 +57,9 @@ static void setCellState(int y, int x, bool alive) {
     setCellNeighbour(yBelow, xRight, alive);
 }
 
+static void clearCells(void) {
+    for (int y = 0; y < CELLS_Y_NUM; ++y)
+        memset(cells[y], 0, CELLS_X_NUM * sizeof(Cell));
+}
+
 #endif
