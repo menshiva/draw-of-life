@@ -18,18 +18,25 @@ static void drawGrid(SDL_Window *window, SDL_Renderer *renderer) {
 
 static void drawCells(SDL_Window *window, SDL_Renderer *renderer) {
     SDL_Rect rect = {0, 0, CELL_SIZE, CELL_SIZE};
-    for (int i = 0; i < CELLS_NUM; ++i) {
-        if (isCellAlive(cells[i])) {
-            scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(getCellHexColor(cells[i]))));
-            scc(window, renderer, SDL_RenderFillRect(renderer, &rect));
-        }
-
-        rect.x += CELL_SIZE;
-        if (rect.x >= CELLS_PANEL_WIDTH) {
-            rect.x = 0;
-            rect.y += CELL_SIZE;
+    for (int y = 0; y < CELLS_Y_NUM; ++y) {
+        for (int x = 0; x < CELLS_X_NUM; ++x) {
+            if (isCellAlive(y, x)) {
+                rect.y = y * CELL_SIZE;
+                rect.x = x * CELL_SIZE;
+                scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(getCellHexColor(y, x))));
+                scc(window, renderer, SDL_RenderFillRect(renderer, &rect));
+            }
         }
     }
+}
+
+static void onCellsPanelClick(int y, int x) {
+    y /= CELL_SIZE;
+    x /= CELL_SIZE;
+    bool isAlive = !isCellAlive(y, x);
+    setCellState(y, x, isAlive);
+    if (isAlive)
+        setCellHexColor(y, x, getSelectedColor());
 }
 
 #endif

@@ -8,7 +8,6 @@
 #define CELLS_X_NUM                     100
 #define CELLS_Y_NUM                     60
 #define CELL_SIZE                       16
-#define CELLS_NUM                       CELLS_Y_NUM * CELLS_X_NUM
 #define CELLS_PANEL_WIDTH               CELLS_X_NUM * CELL_SIZE
 #define CELLS_PANEL_HEIGHT              CELLS_Y_NUM * CELL_SIZE
 #define GRID_COLOR                      0x616A6B
@@ -16,7 +15,7 @@
 #define COLOR_PALETTE_CELL_SIZE         32
 #define COLOR_SELECT_BORDER_THICKNESS   4
 #define COLOR_PALETTE_NUM               8
-const static uint32_t COLOR_PALETTE[] = {
+static const uint32_t COLOR_PALETTE[] = {
         0xE74C3C, // red
         0x8E44AD, // purple
         0x3498DB, // blue
@@ -113,7 +112,11 @@ int main(void) {
                 int y = event.button.y;
                 int x = event.button.x;
                 if (event.button.button == SDL_BUTTON_LEFT) {
-                    if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
+                    if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                        onCellsPanelClick(y, x);
+                        isRendererDirty = true;
+                    }
+                    else if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
                         onColorPanelClick(x);
                         isRendererDirty = true;
                     }
