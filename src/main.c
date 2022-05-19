@@ -96,62 +96,64 @@ int main(void) {
     bool isLeftMouseBtnPressed = false;
     bool isRightMouseBtnPressed = false;
     SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_QUIT || (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)) {
-            // quit sdl
-            break;
-        }
+    while (1) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT || (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)) {
+                // quit sdl
+                goto exit;
+            }
 
-        switch (event.type) {
-            case SDL_KEYUP: {
-                if (event.key.keysym.sym == SDLK_g) {
-                    toggleGrid();
-                    isRendererDirty = true;
-                }
-                break;
-            }
-            case SDL_MOUSEBUTTONDOWN: {
-                int y = event.button.y;
-                int x = event.button.x;
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
-                        isLeftMouseBtnPressed = true;
-                        onCellsPanelDraw(y, x);
+            switch (event.type) {
+                case SDL_KEYUP: {
+                    if (event.key.keysym.sym == SDLK_g) {
+                        toggleGrid();
                         isRendererDirty = true;
                     }
-                    else if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
-                        onColorPanelClick(x);
-                        isRendererDirty = true;
-                    }
+                    break;
                 }
-                else if (event.button.button == SDL_BUTTON_RIGHT && y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
-                    isRightMouseBtnPressed = true;
-                    onCellsPanelErase(y, x);
-                    isRendererDirty = true;
-                }
-                break;
-            }
-            case SDL_MOUSEMOTION: {
-                int y = event.button.y;
-                int x = event.button.x;
-                if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
-                    if (isLeftMouseBtnPressed) {
-                        onCellsPanelDraw(y, x);
-                        isRendererDirty = true;
+                case SDL_MOUSEBUTTONDOWN: {
+                    int y = event.button.y;
+                    int x = event.button.x;
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                            isLeftMouseBtnPressed = true;
+                            onCellsPanelDraw(y, x);
+                            isRendererDirty = true;
+                        }
+                        else if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
+                            onColorPanelClick(x);
+                            isRendererDirty = true;
+                        }
                     }
-                    else if (isRightMouseBtnPressed) {
+                    else if (event.button.button == SDL_BUTTON_RIGHT && y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                        isRightMouseBtnPressed = true;
                         onCellsPanelErase(y, x);
                         isRendererDirty = true;
                     }
+                    break;
                 }
-                break;
-            }
-            case SDL_MOUSEBUTTONUP: {
-                if (event.button.button == SDL_BUTTON_LEFT)
-                    isLeftMouseBtnPressed = false;
-                else if (event.button.button == SDL_BUTTON_RIGHT)
-                    isRightMouseBtnPressed = false;
-                break;
+                case SDL_MOUSEMOTION: {
+                    int y = event.button.y;
+                    int x = event.button.x;
+                    if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
+                        if (isLeftMouseBtnPressed) {
+                            onCellsPanelDraw(y, x);
+                            isRendererDirty = true;
+                        }
+                        else if (isRightMouseBtnPressed) {
+                            onCellsPanelErase(y, x);
+                            isRendererDirty = true;
+                        }
+                    }
+                    break;
+                }
+                case SDL_MOUSEBUTTONUP: {
+                    if (event.button.button == SDL_BUTTON_LEFT)
+                        isLeftMouseBtnPressed = false;
+                    else if (event.button.button == SDL_BUTTON_RIGHT)
+                        isRightMouseBtnPressed = false;
+                    break;
+                }
             }
         }
 
@@ -161,6 +163,7 @@ int main(void) {
         }
     }
 
+exit:
     sdlQuit(window, renderer);
     return 0;
 }
