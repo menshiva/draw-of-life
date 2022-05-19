@@ -1,7 +1,7 @@
 #ifndef DRAWOFLIFE_CELLS_PANEL_H
 #define DRAWOFLIFE_CELLS_PANEL_H
 
-bool shouldDrawGrid = true;
+static bool shouldDrawGrid = true;
 
 static inline void toggleGrid(void) {
     shouldDrawGrid = !shouldDrawGrid;
@@ -16,33 +16,33 @@ static void drawGrid(SDL_Window *window, SDL_Renderer *renderer) {
         scc(window, renderer, SDL_RenderDrawLine(renderer, 0, y, CELLS_PANEL_WIDTH, y));
 }
 
-static void drawCells(SDL_Window *window, SDL_Renderer *renderer) {
+static void drawCells(const Cells cells, SDL_Window *window, SDL_Renderer *renderer) {
     SDL_Rect rect = {0, 0, CELL_SIZE, CELL_SIZE};
-    for (int y = 0; y < CELLS_Y_NUM; ++y) {
-        for (int x = 0; x < CELLS_X_NUM; ++x) {
-            if (isCellAlive(y, x)) {
-                rect.y = y * CELL_SIZE;
-                rect.x = x * CELL_SIZE;
-                scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(getCellHexColor(y, x))));
-                scc(window, renderer, SDL_RenderFillRect(renderer, &rect));
-            }
+    for (int i = 0; i < CELLS_NUM; ++i) {
+        if (isCellAlive(cells, i)) {
+            rect.y = (i / CELLS_X_NUM) * CELL_SIZE;
+            rect.x = (i % CELLS_X_NUM) * CELL_SIZE;
+            scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(getCellHexColor(cells, i))));
+            scc(window, renderer, SDL_RenderFillRect(renderer, &rect));
         }
     }
 }
 
-static void onCellsPanelDraw(int screenY, int screenX) {
+static void onCellsPanelDraw(Cells cells, int screenY, int screenX) {
     int y = screenY / CELL_SIZE;
     int x = screenX / CELL_SIZE;
-    if (!isCellAlive(y, x))
-        setCellState(y, x, true);
-    setCellHexColor(y, x, getSelectedColor());
+    int cellIdx = y * CELLS_X_NUM + x;
+    if (!isCellAlive(cells, cellIdx))
+        setCellState(cells, cellIdx, generateCellNeighbourIndices(cellIdx), true);
+    setCellHexColor(cells, cellIdx, getSelectedColor());
 }
 
-static void onCellsPanelErase(int screenY, int screenX) {
+static void onCellsPanelErase(Cells cells, int screenY, int screenX) {
     int y = screenY / CELL_SIZE;
     int x = screenX / CELL_SIZE;
-    if (isCellAlive(y, x))
-        setCellState(y, x, false);
+    int cellIdx = y * CELLS_X_NUM + x;
+    if (isCellAlive(cells, cellIdx))
+        setCellState(cells, cellIdx, generateCellNeighbourIndices(cellIdx), false);
 }
 
 #endif

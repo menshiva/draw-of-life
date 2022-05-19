@@ -1,9 +1,9 @@
 #ifndef DRAWOFLIFE_COLOR_PANEL_H
 #define DRAWOFLIFE_COLOR_PANEL_H
 
-static uint8_t selectedColorIdx;
+static uint8_t selectedColorIdx = 0;
 
-static inline uint32_t getSelectedColor(void) {
+static uint32_t getSelectedColor(void) {
     return COLOR_PALETTE[selectedColorIdx];
 }
 

@@ -12,4 +12,4 @@ find_package(SDL2 REQUIRED)
 include_directories(DrawOfLife ${SDL2_INCLUDE_DIRS})
 
 add_executable(DrawOfLife ${src_files})
-target_link_libraries(DrawOfLife ${SDL2_LIBRARIES})
+target_link_libraries(DrawOfLife ${SDL2_LIBRARIES} m)
