@@ -3,6 +3,10 @@
 
 bool shouldDrawGrid = true;
 
+static inline void toggleGrid(void) {
+    shouldDrawGrid = !shouldDrawGrid;
+}
+
 static void drawGrid(SDL_Window *window, SDL_Renderer *renderer) {
     if (!shouldDrawGrid) return;
     scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(GRID_COLOR)));

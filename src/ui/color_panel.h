@@ -23,4 +23,8 @@ static void drawPalette(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
+static void onColorPanelClick(int x) {
+    selectedColorIdx = x / COLOR_PALETTE_CELL_SIZE;
+}
+
 #endif

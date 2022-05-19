@@ -104,9 +104,19 @@ int main(void) {
         switch (event.type) {
             case SDL_KEYUP: {
                 if (event.key.keysym.sym == SDLK_g) {
-                    // toggle grid
-                    shouldDrawGrid = !shouldDrawGrid;
+                    toggleGrid();
                     isRendererDirty = true;
+                }
+                break;
+            }
+            case SDL_MOUSEBUTTONDOWN: {
+                int y = event.button.y;
+                int x = event.button.x;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    if (y > CELLS_PANEL_HEIGHT && x < COLOR_PANEL_WIDTH) {
+                        onColorPanelClick(x);
+                        isRendererDirty = true;
+                    }
                 }
                 break;
             }
