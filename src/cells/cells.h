@@ -90,11 +90,11 @@ static uint32_t generateCellHexColor(Cells cells, int idx, int *neighbourIndices
     }
 
     assert(aliveNum > 0);
-    avgR = sqrtf(avgR / aliveNum), avgB = sqrtf(avgB / aliveNum), avgG = sqrtf(avgG / aliveNum);
+    avgR = sqrtf(avgR / aliveNum), avgG = sqrtf(avgG / aliveNum), avgB = sqrtf(avgB / aliveNum);
 
     uint32_t avgColor = (uint32_t) avgR;
-    avgColor = (avgColor << 8) | (uint8_t) avgB;
     avgColor = (avgColor << 8) | (uint8_t) avgG;
+    avgColor = (avgColor << 8) | (uint8_t) avgB;
 
     return avgColor;
 }

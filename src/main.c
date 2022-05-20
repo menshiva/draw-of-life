@@ -115,10 +115,18 @@ int main(void) {
                         clearCells(cells);
                         isRendererDirty = true;
                     }
+                    else if (event.key.keysym.sym == SDLK_RIGHT) {
+                        selectNextColor();
+                        isRendererDirty = true;
+                    }
+                    else if (event.key.keysym.sym == SDLK_LEFT) {
+                        selectPreviousColor();
+                        isRendererDirty = true;
+                    }
                     break;
                 }
                 case SDL_KEYDOWN: {
-                    if (event.key.keysym.sym == SDLK_RIGHT) {
+                    if (event.key.keysym.sym == SDLK_UP) {
                         createCellsNextGeneration(cells);
                         isRendererDirty = true;
                     }

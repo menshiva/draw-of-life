@@ -3,7 +3,7 @@
 
 static uint8_t selectedColorIdx = 0;
 
-static uint32_t getSelectedColor(void) {
+static inline uint32_t getSelectedColor(void) {
     return COLOR_PALETTE[selectedColorIdx];
 }
 
@@ -23,8 +23,19 @@ static void drawPalette(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
-static void onColorPanelClick(int x) {
+static inline void onColorPanelClick(int x) {
     selectedColorIdx = x / COLOR_PALETTE_CELL_SIZE;
+}
+
+static inline void selectNextColor(void) {
+    selectedColorIdx = (selectedColorIdx + 1) % COLOR_PALETTE_NUM;
+}
+
+static inline void selectPreviousColor(void) {
+    if (selectedColorIdx > 0)
+        --selectedColorIdx;
+    else
+        selectedColorIdx = COLOR_PALETTE_NUM - 1;
 }
 
 #endif
