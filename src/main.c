@@ -62,9 +62,9 @@ void *scp(SDL_Window *window, SDL_Renderer *renderer, void *ptr) {
     return ptr;
 }
 
-#include "cells/cells.h"
-#include "ui/color_panel.h"
-#include "ui/cells_panel.h"
+#include "cells.h"
+#include "color_panel.h"
+#include "cells_panel.h"
 
 static Cells cells;
 
