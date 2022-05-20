@@ -5,6 +5,9 @@
 #define WINDOW_TITLE        "Draw of Life"
 #define BACKGROUND_COLOR    0x000000
 
+// should be at least 2
+#define GENERATIONS_BUFFER_SIZE         128
+
 #define CELLS_Y_NUM                     60
 #define CELLS_X_NUM                     100
 #define CELL_SIZE                       16
@@ -63,17 +66,16 @@ void *scp(SDL_Window *window, SDL_Renderer *renderer, void *ptr) {
 }
 
 #include "cells.h"
+#include "gens_buffer.h"
 #include "color_panel.h"
 #include "cells_panel.h"
-
-static Cells cells;
 
 void redrawRenderer(SDL_Window *window, SDL_Renderer *renderer) {
     scc(window, renderer, SDL_SetRenderDrawColor(renderer, HEX_COLOR(BACKGROUND_COLOR)));
     scc(window, renderer, SDL_RenderClear(renderer));
     drawPalette(window, renderer);
     drawGrid(window, renderer);
-    drawCells(cells, window, renderer);
+    drawCells(getCurrentGeneration(), window, renderer);
     SDL_RenderPresent(renderer);
 }
 
@@ -112,7 +114,8 @@ int main(void) {
                         isRendererDirty = true;
                     }
                     else if (event.key.keysym.sym == SDLK_c) {
-                        clearCells(cells);
+                        clearCells(getCurrentGeneration());
+                        setCurrentGenerationModified();
                         isRendererDirty = true;
                     }
                     else if (event.key.keysym.sym == SDLK_RIGHT) {
@@ -127,8 +130,13 @@ int main(void) {
                 }
                 case SDL_KEYDOWN: {
                     if (event.key.keysym.sym == SDLK_UP) {
-                        createCellsNextGeneration(cells);
+                        if (!setNextGeneration())
+                            createCellsNewGeneration(getPreviousGeneration(), getCurrentGeneration());
                         isRendererDirty = true;
+                    }
+                    else if (event.key.keysym.sym == SDLK_DOWN) {
+                        if (setPreviousGeneration())
+                            isRendererDirty = true;
                     }
                     break;
                 }
@@ -139,12 +147,14 @@ int main(void) {
                         // cells panel click
                         if (event.button.button == SDL_BUTTON_LEFT) {
                             isLeftMouseBtnPressed = true;
-                            onCellsPanelDraw(cells, y, x);
+                            onCellsPanelDraw(getCurrentGeneration(), y, x);
+                            setCurrentGenerationModified();
                             isRendererDirty = true;
                         }
                         else if (event.button.button == SDL_BUTTON_RIGHT) {
                             isRightMouseBtnPressed = true;
-                            onCellsPanelErase(cells, y, x);
+                            onCellsPanelErase(getCurrentGeneration(), y, x);
+                            setCurrentGenerationModified();
                             isRendererDirty = true;
                         }
                     }
@@ -160,11 +170,13 @@ int main(void) {
                     int x = event.button.x;
                     if (y < CELLS_PANEL_HEIGHT && x < CELLS_PANEL_WIDTH) {
                         if (isLeftMouseBtnPressed) {
-                            onCellsPanelDraw(cells, y, x);
+                            onCellsPanelDraw(getCurrentGeneration(), y, x);
+                            setCurrentGenerationModified();
                             isRendererDirty = true;
                         }
                         else if (isRightMouseBtnPressed) {
-                            onCellsPanelErase(cells, y, x);
+                            onCellsPanelErase(getCurrentGeneration(), y, x);
+                            setCurrentGenerationModified();
                             isRendererDirty = true;
                         }
                     }
