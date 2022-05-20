@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <sys/time.h>
 #include "SDL2/SDL.h"
 
 // --------! PREFERENCES !--------
@@ -7,6 +8,7 @@
 
 // should be at least 2
 #define GENERATIONS_BUFFER_SIZE         128
+#define ANIM_DURATION_MS                150
 
 #define CELLS_Y_NUM                     60
 #define CELLS_X_NUM                     100
@@ -79,6 +81,12 @@ void redrawRenderer(SDL_Window *window, SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
+size_t getCurrentTimeInMs(void) {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
 int main(void) {
     // init
     scc(NULL, NULL, SDL_Init(SDL_INIT_VIDEO));
@@ -100,12 +108,25 @@ int main(void) {
     bool isRendererDirty = false;
     bool isLeftMouseBtnPressed = false;
     bool isRightMouseBtnPressed = false;
+    bool isAnimationEnabled = false;
+    size_t lastMs = 0;
     SDL_Event event;
     while (1) {
+        if (isAnimationEnabled) {
+            size_t currentMs = getCurrentTimeInMs();
+            if (currentMs - lastMs >= ANIM_DURATION_MS) {
+                lastMs = currentMs;
+                if (!setNextGeneration())
+                    createCellsNewGeneration(getPreviousGeneration(), getCurrentGeneration());
+                isRendererDirty = true;
+            }
+        }
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)) {
                 // quit sdl
-                goto exit;
+                sdlQuit(window, renderer);
+                return 0;
             }
             switch (event.type) {
                 case SDL_KEYUP: {
@@ -113,7 +134,7 @@ int main(void) {
                         toggleGrid();
                         isRendererDirty = true;
                     }
-                    else if (event.key.keysym.sym == SDLK_c) {
+                    else if (!isAnimationEnabled && event.key.keysym.sym == SDLK_c) {
                         clearCells(getCurrentGeneration());
                         setCurrentGenerationModified();
                         isRendererDirty = true;
@@ -126,17 +147,22 @@ int main(void) {
                         selectPreviousColor();
                         isRendererDirty = true;
                     }
+                    else if (event.key.keysym.sym == SDLK_SPACE) {
+                        isAnimationEnabled = !isAnimationEnabled;
+                    }
                     break;
                 }
                 case SDL_KEYDOWN: {
-                    if (event.key.keysym.sym == SDLK_UP) {
-                        if (!setNextGeneration())
-                            createCellsNewGeneration(getPreviousGeneration(), getCurrentGeneration());
-                        isRendererDirty = true;
-                    }
-                    else if (event.key.keysym.sym == SDLK_DOWN) {
-                        if (setPreviousGeneration())
+                    if (!isAnimationEnabled) {
+                        if (event.key.keysym.sym == SDLK_UP) {
+                            if (!setNextGeneration())
+                                createCellsNewGeneration(getPreviousGeneration(), getCurrentGeneration());
                             isRendererDirty = true;
+                        }
+                        else if (event.key.keysym.sym == SDLK_DOWN) {
+                            if (setPreviousGeneration())
+                                isRendererDirty = true;
+                        }
                     }
                     break;
                 }
@@ -197,8 +223,4 @@ int main(void) {
             redrawRenderer(window, renderer);
         }
     }
-
-exit:
-    sdlQuit(window, renderer);
-    return 0;
 }
