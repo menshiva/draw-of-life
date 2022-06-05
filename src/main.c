@@ -2,7 +2,7 @@
 #include <sys/time.h>
 #include "SDL2/SDL.h"
 
-// --------! PREFERENCES !--------
+// ----------------------------------! PREFERENCES !----------------------------------
 #define WINDOW_TITLE        "Draw of Life"
 #define BACKGROUND_COLOR    0x000000
 
@@ -13,9 +13,6 @@
 #define CELLS_Y_NUM                     60
 #define CELLS_X_NUM                     100
 #define CELL_SIZE                       16
-#define CELLS_NUM                       (CELLS_Y_NUM * CELLS_X_NUM)
-#define CELLS_PANEL_HEIGHT              (CELLS_Y_NUM * CELL_SIZE)
-#define CELLS_PANEL_WIDTH               (CELLS_X_NUM * CELL_SIZE)
 #define GRID_COLOR                      0x616A6B
 
 #define COLOR_PALETTE_CELL_SIZE         32
@@ -31,9 +28,14 @@ static const uint32_t COLOR_PALETTE[] = {
         0xECF0F1, // white
         0xBDC3C7, // grey
 };
+// -----------------------------------------------------------------------------------
+
+#define CELLS_NUM                       (CELLS_Y_NUM * CELLS_X_NUM)
+#define CELLS_PANEL_HEIGHT              (CELLS_Y_NUM * CELL_SIZE)
+#define CELLS_PANEL_WIDTH               (CELLS_X_NUM * CELL_SIZE)
+
 #define COLOR_PANEL_HEIGHT              COLOR_PALETTE_CELL_SIZE
 #define COLOR_PANEL_WIDTH               (COLOR_PALETTE_NUM * COLOR_PALETTE_CELL_SIZE)
-// -------------------------------
 
 // parsing hex color
 #define HEX_COLOR(hex) \
