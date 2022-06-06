@@ -38,4 +38,4 @@ static inline void selectPreviousColor(void) {
         selectedColorIdx = COLOR_PALETTE_NUM - 1;
 }
 
-#endif
+#endif // DRAWOFLIFE_COLOR_PANEL_H

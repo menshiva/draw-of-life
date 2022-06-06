@@ -122,4 +122,4 @@ static inline void clearCells(Cells cells) {
     memset(cells, 0, sizeof(Cells));
 }
 
-#endif
+#endif // DRAWOFLIFE_CELLS_H

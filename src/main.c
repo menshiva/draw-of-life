@@ -80,13 +80,13 @@ int main(void) {
     // init
     scc(NULL, NULL, SDL_Init(SDL_INIT_VIDEO));
     int windowWidth = (CELLS_PANEL_WIDTH > COLOR_PANEL_WIDTH) ? CELLS_PANEL_WIDTH : COLOR_PANEL_WIDTH;
-    SDL_Window *window = scp(NULL, NULL, SDL_CreateWindow(
+    SDL_Window *window = (SDL_Window*) scp(NULL, NULL, SDL_CreateWindow(
             WINDOW_TITLE,
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             windowWidth, CELLS_PANEL_HEIGHT + COLOR_PANEL_HEIGHT,
             SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS
     ));
-    SDL_Renderer *renderer = scp(window, NULL, SDL_CreateRenderer(
+    SDL_Renderer *renderer = (SDL_Renderer*) scp(window, NULL, SDL_CreateRenderer(
             window, -1,
             SDL_RENDERER_SOFTWARE
     ));

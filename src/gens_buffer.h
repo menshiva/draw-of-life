@@ -41,4 +41,4 @@ static inline void setCurrentGenerationModified(void) {
     maxGenerationIdx = currentGenerationIdx;
 }
 
-#endif
+#endif // DRAWOFLIFE_GENS_BUFFER_H

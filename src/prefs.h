@@ -27,4 +27,4 @@ static const uint32_t COLOR_PALETTE[] = {
         0xBDC3C7, // grey
 };
 
-#endif
+#endif // DRAWOFLIFE_PREFS_H

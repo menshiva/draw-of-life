@@ -51,4 +51,4 @@ static void onCellsPanelErase(Cells cells, int screenY, int screenX) {
     }
 }
 
-#endif
+#endif // DRAWOFLIFE_CELLS_PANEL_H
