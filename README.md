@@ -1,9 +1,18 @@
-# Draw of Life [![Codacy Badge](https://app.codacy.com/project/badge/Grade/737cc72a9a0d45ba8ac49d29b3ddd968)](https://www.codacy.com/gh/menshiva/draw-of-life/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=menshiva/draw-of-life&amp;utm_campaign=Badge_Grade)
-
-A simple Game of Life app with ability to draw current generation written in C11 with SDL2.
-
-| [Key Features](#key-features-) 🍪 | [Requirements](#requirements-) 🧬 | [Build and Run](#build-and-run-) 🚀 | [Controls](#controls-) 📃 | [Credits](#credits-) ✍ |
-|-----------------------------------|-----------------------------------|-------------------------------------|---------------------------|------------------------|
+<h1 align="center">
+    Draw of Life<br>
+    <a href="https://www.codacy.com/gh/menshiva/draw-of-life/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=menshiva/draw-of-life&amp;utm_campaign=Badge_Grade">
+        <img alt="Code quality"
+            src="https://app.codacy.com/project/badge/Grade/737cc72a9a0d45ba8ac49d29b3ddd968">
+    </a>
+</h1>
+<p align="center">
+    <a href="#key-features-">Key Features 🍪</a> |
+    <a href="#requirements-">Requirements 🧬</a> |
+    <a href="#build-and-run-">Build and Run 🚀</a> |
+    <a href="#controls-">Controls 📃</a> |
+    <a href="#credits-">Credits ✍</a>
+</p>
+<h1 align="center"><img src="demo/demo.gif" alt="Preview"></h1>
 
 ----
 
