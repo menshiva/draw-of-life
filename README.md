@@ -66,6 +66,10 @@ cmake .. && make
 ./DrawOfLife
 ```
 
+### Preferences (optional)
+
+You can also customize preferences before compilation by modifying [prefs.h](src/prefs.h) file.
+
 ## Controls 📃
 
 ### Mouse
