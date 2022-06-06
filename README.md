@@ -1,7 +1,4 @@
-# Draw of Life
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/737cc72a9a0d45ba8ac49d29b3ddd968)](https://www.codacy.com/gh/menshiva/draw-of-life/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=menshiva/draw-of-life&amp;utm_campaign=Badge_Grade)
-
-----
+# Draw of Life [![Codacy Badge](https://app.codacy.com/project/badge/Grade/737cc72a9a0d45ba8ac49d29b3ddd968)](https://www.codacy.com/gh/menshiva/draw-of-life/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=menshiva/draw-of-life&amp;utm_campaign=Badge_Grade)
 
 A simple Game of Life app with ability to draw current generation written in C11 with SDL2.
 
@@ -9,8 +6,6 @@ A simple Game of Life app with ability to draw current generation written in C11
 |-----------------------------------|-----------------------------------|-------------------------------------|---------------------------|------------------------|
 
 ----
-
-![Demo](demo/demo.gif)
 
 ## Key Features 🍪
 
