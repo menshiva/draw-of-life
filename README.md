@@ -11,13 +11,13 @@
 
 ## Key Features 🍪
 
-*  TODO
+* TODO
 
 ## Requirements 🧬
 
-*  C11 compiler
-*  [CMake](https://cmake.org/)
-*  [SDL2](https://www.libsdl.org/)
+* C11 compiler
+* [CMake](https://cmake.org/)
+* [SDL2](https://www.libsdl.org/)
 
 ## Build and Run 🚀
 
@@ -38,22 +38,22 @@ cmake .. && make
 
 ## How to Use 📃
 
-*  TODO
+* TODO
 
 ## Credits ✍
 
 ### Third-party libraries / frameworks
 
-*  [SDL2](https://www.libsdl.org/)
+* [SDL2](https://www.libsdl.org/)
 
 ### Used algorithms
 
-*  [Conway's Game of Life rules](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
-*  [Averaging RGB colors](https://sighack.com/post/averaging-rgb-colors-the-right-way)
+* [Conway's Game of Life rules](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+* [Averaging RGB colors](https://sighack.com/post/averaging-rgb-colors-the-right-way)
 
 ### Author
 
-*  Ivan Menshikov (menshiva@fit.cvut.cz)
+* Ivan Menshikov (menshiva@fit.cvut.cz)
 
 ### License
 

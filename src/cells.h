@@ -13,31 +13,31 @@ typedef Cell Cells[CELLS_NUM];
 
 static inline uint32_t getCellHexColor(const Cells cells, int idx) {
     assert(idx >= 0 && idx < CELLS_NUM);
-    return cells[idx] >> 8;
+    return cells[idx] >> 8u;
 }
 
 static inline void setCellHexColor(Cells cells, int idx, uint32_t color) {
     assert(idx >= 0 && idx < CELLS_NUM);
-    cells[idx] = (color << 8) | (cells[idx] & 0xFF);
+    cells[idx] = (color << 8u) | (cells[idx] & 0xFFu);
 }
 
 static inline uint8_t getCellAliveNeighboursNum(const Cells cells, int idx) {
     assert(idx >= 0 && idx < CELLS_NUM);
-    return (cells[idx] >> 1) & 0xF;
+    return (cells[idx] >> 1u) & 0xFu;
 }
 
 static inline void setCellNeighbourState(Cells cells, int idx, bool alive) {
     assert(idx >= 0 && idx < CELLS_NUM);
     if (alive)
-        cells[idx] += 0x2;
+        cells[idx] += 0x2u;
     else
-        cells[idx] -= 0x2;
+        cells[idx] -= 0x2u;
     assert(getCellAliveNeighboursNum(cells, idx) < 9);
 }
 
 static inline bool isCellAlive(const Cells cells, int idx) {
     assert(idx >= 0 && idx < CELLS_NUM);
-    return cells[idx] & 0x1;
+    return cells[idx] & 0x1u;
 }
 
 static int *generateCellNeighbourIndices(int idx) {
@@ -64,9 +64,9 @@ static int *generateCellNeighbourIndices(int idx) {
 static void setCellState(Cells cells, int idx, int *neighbourIndices, bool alive) {
     assert(idx >= 0 && idx < CELLS_NUM);
     if (alive)
-        cells[idx] |= 0x1;
+        cells[idx] |= 0x1u;
     else
-        cells[idx] &= ~0x1;
+        cells[idx] &= ~0x1u;
     for (int i = 0; i < 8; ++i)
         setCellNeighbourState(cells, neighbourIndices[i], alive);
 }
@@ -79,11 +79,11 @@ static uint32_t generateCellHexColor(const Cells cells, int idx, int *neighbourI
     for (int i = 0; i < 8; ++i) {
         if (isCellAlive(cells, neighbourIndices[i])) {
             uint32_t neighbourColor = getCellHexColor(cells, neighbourIndices[i]);
-            float b = (float) (neighbourColor & 0xFF);
+            float b = (float) (neighbourColor & 0xFFu);
             neighbourColor >>= 8;
-            float g = (float) (neighbourColor & 0xFF);
+            float g = (float) (neighbourColor & 0xFFu);
             neighbourColor >>= 8;
-            float r = (float) (neighbourColor & 0xFF);
+            float r = (float) (neighbourColor & 0xFFu);
             avgR += r * r, avgG += g * g, avgB += b * b;
             aliveNum += 1.0f;
         }
@@ -93,8 +93,8 @@ static uint32_t generateCellHexColor(const Cells cells, int idx, int *neighbourI
     avgR = sqrtf(avgR / aliveNum), avgG = sqrtf(avgG / aliveNum), avgB = sqrtf(avgB / aliveNum);
 
     uint32_t avgColor = (uint32_t) avgR;
-    avgColor = (avgColor << 8) | (uint8_t) avgG;
-    avgColor = (avgColor << 8) | (uint8_t) avgB;
+    avgColor = (avgColor << 8u) | (uint8_t) avgG;
+    avgColor = (avgColor << 8u) | (uint8_t) avgB;
 
     return avgColor;
 }
