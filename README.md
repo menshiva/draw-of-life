@@ -14,8 +14,6 @@
 </p>
 <h1 align="center"><img src="demo/demo.gif" alt="Preview"></h1>
 
-----
-
 ## Key Features 🍪
 
 ### Cell data packing
