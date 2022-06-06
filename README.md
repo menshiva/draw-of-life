@@ -61,7 +61,7 @@ You can also customize preferences before compilation by modifying [prefs.h](src
 
 CMake expects to find the SDL2 headers and libraries in a subfolder named [libs/SDL2](libs/SDL2). You need to
 [download](https://www.libsdl.org/download-2.0.php) latest **SDL2-devel-...-VC.zip** archive and extract its content
-to [libs/SDL2](libs/SDL2) folder, so it will look like this:
+to [libs/SDL2](libs/SDL2) folder, so it should look like this:
 
 ```text
 📂libs
@@ -86,9 +86,7 @@ sudo apt install libsdl2-dev
 mkdir release
 cd release
 cmake .. && make all
-
-./DrawOfLife # linux
-DrawOfLife # windows
+./DrawOfLife
 ```
 
 ## Controls 📃
