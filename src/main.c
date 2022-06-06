@@ -73,7 +73,7 @@ void printControls(void) {
     puts("\tG:\n\t\tToggle grid.");
     puts("\tC:\n\t\tClear all (mark all cells as dead).");
     puts("\tSpace:\n\t\tStart / stop animation with generating next epochs.");
-    puts("\tESC:\n\t\tClose app.");
+    puts("\tEsc:\n\t\tClose app.");
 }
 
 int main(void) {

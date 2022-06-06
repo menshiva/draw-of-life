@@ -6,7 +6,7 @@
 
 // cell data packing - 32 bits unsigned integer
 // 00000000    00000000     00000000    000          0000           0
-// r channel   g channel    b channel  unused  alive neighbours  is alive
+// r channel   g channel    b channel  unused  alive neighbors  is alive
 
 typedef uint32_t Cell;
 typedef Cell Cells[CELLS_NUM];
@@ -21,18 +21,18 @@ static inline void setCellHexColor(Cells cells, int idx, uint32_t color) {
     cells[idx] = (color << 8u) | (cells[idx] & 0xFFu);
 }
 
-static inline uint8_t getCellAliveNeighboursNum(const Cells cells, int idx) {
+static inline uint8_t getCellAliveNeighborsNum(const Cells cells, int idx) {
     assert(idx >= 0 && idx < CELLS_NUM);
     return (cells[idx] >> 1u) & 0xFu;
 }
 
-static inline void setCellNeighbourState(Cells cells, int idx, bool alive) {
+static inline void setCellNeighborState(Cells cells, int idx, bool alive) {
     assert(idx >= 0 && idx < CELLS_NUM);
     if (alive)
         cells[idx] += 0x2u;
     else
         cells[idx] -= 0x2u;
-    assert(getCellAliveNeighboursNum(cells, idx) < 9);
+    assert(getCellAliveNeighborsNum(cells, idx) < 9);
 }
 
 static inline bool isCellAlive(const Cells cells, int idx) {
@@ -40,7 +40,7 @@ static inline bool isCellAlive(const Cells cells, int idx) {
     return cells[idx] & 0x1u;
 }
 
-static int *generateCellNeighbourIndices(int idx) {
+static void generateCellNeighborIndices(int idx, int neighborIndices[8]) {
     int y = idx / CELLS_X_NUM;
     int x = idx % CELLS_X_NUM;
 
@@ -49,41 +49,39 @@ static int *generateCellNeighbourIndices(int idx) {
     int yAbove = (y > 0) ? (y - 1) : (CELLS_Y_NUM - 1);
     int yBelow = (y < CELLS_Y_NUM - 1) ? (y + 1) : 0;
 
-    static int neighbIndices[8];
-    neighbIndices[0] = yAbove * CELLS_X_NUM + xLeft;
-    neighbIndices[1] = yAbove * CELLS_X_NUM + x;
-    neighbIndices[2] = yAbove * CELLS_X_NUM + xRight;
-    neighbIndices[3] = y * CELLS_X_NUM + xLeft;
-    neighbIndices[4] = y * CELLS_X_NUM + xRight;
-    neighbIndices[5] = yBelow * CELLS_X_NUM + xLeft;
-    neighbIndices[6] = yBelow * CELLS_X_NUM + x;
-    neighbIndices[7] = yBelow * CELLS_X_NUM + xRight;
-    return neighbIndices;
+    neighborIndices[0] = yAbove * CELLS_X_NUM + xLeft;
+    neighborIndices[1] = yAbove * CELLS_X_NUM + x;
+    neighborIndices[2] = yAbove * CELLS_X_NUM + xRight;
+    neighborIndices[3] = y * CELLS_X_NUM + xLeft;
+    neighborIndices[4] = y * CELLS_X_NUM + xRight;
+    neighborIndices[5] = yBelow * CELLS_X_NUM + xLeft;
+    neighborIndices[6] = yBelow * CELLS_X_NUM + x;
+    neighborIndices[7] = yBelow * CELLS_X_NUM + xRight;
 }
 
-static void setCellState(Cells cells, int idx, int *neighbourIndices, bool alive) {
+static void setCellState(Cells cells, int idx, int *neighborIndices, bool alive) {
     assert(idx >= 0 && idx < CELLS_NUM);
     if (alive)
         cells[idx] |= 0x1u;
     else
         cells[idx] &= ~0x1u;
     for (int i = 0; i < 8; ++i)
-        setCellNeighbourState(cells, neighbourIndices[i], alive);
+        setCellNeighborState(cells, neighborIndices[i], alive);
 }
 
-static uint32_t generateCellHexColor(const Cells cells, int idx, int *neighbourIndices) {
+static uint32_t generateCellHexColor(const Cells cells, int idx, int *neighborIndices) {
     assert(idx >= 0 && idx < CELLS_NUM);
     float avgR = 0.0f, avgG = 0.0f, avgB = 0.0f;
     float aliveNum = 0.0f;
 
     for (int i = 0; i < 8; ++i) {
-        if (isCellAlive(cells, neighbourIndices[i])) {
-            uint32_t neighbourColor = getCellHexColor(cells, neighbourIndices[i]);
-            float b = (float) (neighbourColor & 0xFFu);
-            neighbourColor >>= 8;
-            float g = (float) (neighbourColor & 0xFFu);
-            neighbourColor >>= 8;
-            float r = (float) (neighbourColor & 0xFFu);
+        if (isCellAlive(cells, neighborIndices[i])) {
+            uint32_t neighborColor = getCellHexColor(cells, neighborIndices[i]);
+            float b = (float) (neighborColor & 0xFFu);
+            neighborColor >>= 8;
+            float g = (float) (neighborColor & 0xFFu);
+            neighborColor >>= 8;
+            float r = (float) (neighborColor & 0xFFu);
             avgR += r * r, avgG += g * g, avgB += b * b;
             aliveNum += 1.0f;
         }
@@ -101,18 +99,20 @@ static uint32_t generateCellHexColor(const Cells cells, int idx, int *neighbourI
 
 static void createCellsNewGeneration(const Cells currentGen, Cells newGen) {
     for (int i = 0; i < CELLS_NUM; ++i) {
-        uint8_t aliveNeighboursNum = getCellAliveNeighboursNum(currentGen, i);
+        uint8_t aliveNeighborsNum = getCellAliveNeighborsNum(currentGen, i);
         if (!isCellAlive(currentGen, i)) {
-            if (aliveNeighboursNum == 3) {
-                int *neighbourIndices = generateCellNeighbourIndices(i);
-                setCellState(newGen, i, neighbourIndices, true);
-                setCellHexColor(newGen, i, generateCellHexColor(currentGen, i, neighbourIndices));
+            if (aliveNeighborsNum == 3) {
+                int neighborIndices[8];
+                generateCellNeighborIndices(i, neighborIndices);
+                setCellState(newGen, i, neighborIndices, true);
+                setCellHexColor(newGen, i, generateCellHexColor(currentGen, i, neighborIndices));
             }
         }
         else {
-            if (aliveNeighboursNum < 2 || aliveNeighboursNum > 3) {
-                int *neighbourIndices = generateCellNeighbourIndices(i);
-                setCellState(newGen, i, neighbourIndices, false);
+            if (aliveNeighborsNum < 2 || aliveNeighborsNum > 3) {
+                int neighborIndices[8];
+                generateCellNeighborIndices(i, neighborIndices);
+                setCellState(newGen, i, neighborIndices, false);
             }
         }
     }

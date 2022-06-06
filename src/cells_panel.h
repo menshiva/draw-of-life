@@ -32,8 +32,11 @@ static void onCellsPanelDraw(Cells cells, int screenY, int screenX) {
     int y = screenY / CELL_SIZE;
     int x = screenX / CELL_SIZE;
     int cellIdx = y * CELLS_X_NUM + x;
-    if (!isCellAlive(cells, cellIdx))
-        setCellState(cells, cellIdx, generateCellNeighbourIndices(cellIdx), true);
+    if (!isCellAlive(cells, cellIdx)) {
+        int neighborIndices[8];
+        generateCellNeighborIndices(cellIdx, neighborIndices);
+        setCellState(cells, cellIdx, neighborIndices, true);
+    }
     setCellHexColor(cells, cellIdx, getSelectedColor());
 }
 
@@ -41,8 +44,11 @@ static void onCellsPanelErase(Cells cells, int screenY, int screenX) {
     int y = screenY / CELL_SIZE;
     int x = screenX / CELL_SIZE;
     int cellIdx = y * CELLS_X_NUM + x;
-    if (isCellAlive(cells, cellIdx))
-        setCellState(cells, cellIdx, generateCellNeighbourIndices(cellIdx), false);
+    if (isCellAlive(cells, cellIdx)) {
+        int neighborIndices[8];
+        generateCellNeighborIndices(cellIdx, neighborIndices);
+        setCellState(cells, cellIdx, neighborIndices, false);
+    }
 }
 
 #endif
