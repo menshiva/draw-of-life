@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 project(DrawOfLife C)
 
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE MinSizeRel)
-endif()
+endif ()
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -Wpedantic -ggdb -O0")
 set(CMAKE_C_STANDARD 11)

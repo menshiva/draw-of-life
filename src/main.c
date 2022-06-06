@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <sys/time.h>
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 #include "prefs.h"
 
 #define CELLS_NUM                       (CELLS_Y_NUM * CELLS_X_NUM)
@@ -62,6 +62,20 @@ size_t getCurrentTimeInMs(void) {
     return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
+void printControls(void) {
+    puts("Mouse controls:");
+    puts("\tLeft mouse button click (hold) on grid:\n\t\tDraw with selected color (mark cell(s) as alive).");
+    puts("\tLeft mouse button click on color palette:\n\t\tChange draw color.");
+    puts("\tRight mouse button click (hold) on grid:\n\t\tErase (mark cell(s) as dead).");
+    puts("Keyboard controls:");
+    puts("\tLeft arrow / Right arrow:\n\t\tChange draw color.");
+    puts("\tUp arrow / Down arrow:\n\t\tNext / previous generation.");
+    puts("\tG:\n\t\tToggle grid.");
+    puts("\tC:\n\t\tClear all (mark all cells as dead).");
+    puts("\tSpace:\n\t\tStart / stop animation with generating next epochs.");
+    puts("\tESC:\n\t\tClose app.");
+}
+
 int main(void) {
     // init
     scc(NULL, NULL, SDL_Init(SDL_INIT_VIDEO));
@@ -77,15 +91,16 @@ int main(void) {
             SDL_RENDERER_SOFTWARE
     ));
 
-    redrawRenderer(window, renderer);
-
-    // event loop
-    bool isRendererDirty = false;
+    bool isRendererDirty = true;
     bool isLeftMouseBtnPressed = false;
     bool isRightMouseBtnPressed = false;
     bool isAnimationEnabled = false;
     size_t lastMs = 0;
     SDL_Event event;
+
+    printControls();
+
+    // event loop
     while (true) {
         if (isAnimationEnabled) {
             size_t currentMs = getCurrentTimeInMs();

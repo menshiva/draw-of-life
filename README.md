@@ -17,9 +17,9 @@
 
 ## Requirements 🧬
 
-* C11
-* CMake
-* SDL2
+* C11 compiler
+* [CMake](https://cmake.org/)
+* [SDL2](https://www.libsdl.org/)
 
 ## Build and Run 🚀
 
@@ -49,7 +49,7 @@ $ ./DrawOfLife
 
 ## Credits ✍
 
-### Third-party libraries
+### Third-party libraries / frameworks
 
 * [SDL2](https://www.libsdl.org/)
 
