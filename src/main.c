@@ -1,6 +1,8 @@
+#include <SDL.h>
 #include <stdbool.h>
-#include <sys/time.h>
-#include <SDL2/SDL.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
 #include "prefs.h"
 
 #define CELLS_NUM                       (CELLS_Y_NUM * CELLS_X_NUM)
@@ -56,12 +58,6 @@ void redrawRenderer(SDL_Window *window, SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
-size_t getCurrentTimeInMs(void) {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
 void printControls(void) {
     puts("Mouse controls:");
     puts("\tLeft mouse button click (hold) on grid:\n\t\tDraw with selected color (mark cell(s) as alive).");
@@ -76,7 +72,7 @@ void printControls(void) {
     puts("\tEsc:\n\t\tClose app.");
 }
 
-int main(void) {
+int main() {
     // init
     scc(NULL, NULL, SDL_Init(SDL_INIT_VIDEO));
     int windowWidth = (CELLS_PANEL_WIDTH > COLOR_PANEL_WIDTH) ? CELLS_PANEL_WIDTH : COLOR_PANEL_WIDTH;
@@ -95,7 +91,7 @@ int main(void) {
     bool isLeftMouseBtnPressed = false;
     bool isRightMouseBtnPressed = false;
     bool isAnimationEnabled = false;
-    size_t lastMs = 0;
+    uint32_t lastMs = SDL_GetTicks();
     SDL_Event event;
 
     printControls();
@@ -103,7 +99,7 @@ int main(void) {
     // event loop
     while (true) {
         if (isAnimationEnabled) {
-            size_t currentMs = getCurrentTimeInMs();
+            size_t currentMs = SDL_GetTicks();
             if (currentMs - lastMs >= ANIM_DURATION_MS) {
                 lastMs = currentMs;
                 if (!setNextGeneration())

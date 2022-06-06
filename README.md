@@ -51,7 +51,30 @@ You can see the exact implementation in `generateCellHexColor` function in [cell
 
 ## Build and Run 🚀
 
+### Preferences (optional)
+
+You can also customize preferences before compilation by modifying [prefs.h](src/prefs.h) file.
+
 ### Install SDL2
+
+#### Windows (Visual Studio)
+
+CMake expects to find the SDL2 headers and libraries in a subfolder named [libs/SDL2](libs/SDL2). You need to
+[download](https://www.libsdl.org/download-2.0.php) latest **SDL2-devel-...-VC.zip** archive and extract its content
+to [libs/SDL2](libs/SDL2) folder, so it will look like this:
+
+```text
+📂libs
+ ┗ 📂SDL2
+   ┣ 📂docs
+   ┣ 📂include
+   ┣ 📂lib
+   ┗ ...
+```
+
+#### Linux
+
+Download and install **libsdl2-dev** via your package manager, for example:
 
 ```bash
 sudo apt install libsdl2-dev
@@ -62,13 +85,11 @@ sudo apt install libsdl2-dev
 ```bash
 mkdir release
 cd release
-cmake .. && make
-./DrawOfLife
+cmake .. && make all
+
+./DrawOfLife # linux
+DrawOfLife # windows
 ```
-
-### Preferences (optional)
-
-You can also customize preferences before compilation by modifying [prefs.h](src/prefs.h) file.
 
 ## Controls 📃
 
