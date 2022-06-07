@@ -14,13 +14,13 @@ endif ()
 set(CMAKE_C_STANDARD 11)
 
 # sdl2
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/libs/SDL2)
 find_package(SDL2 REQUIRED COMPONENTS main)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2main_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
 # sources
-file(GLOB_RECURSE SOURCES src/*.c)
-file(GLOB_RECURSE HEADERS src/*.h)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.c)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/src/*.h)
 add_executable(DrawOfLife ${SOURCES} ${HEADERS})
 
 target_link_libraries(DrawOfLife PRIVATE ${SDL2_LIBS})
