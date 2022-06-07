@@ -18,17 +18,18 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 find_package(SDL2 REQUIRED COMPONENTS main)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2main_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
 
-# src
-file(GLOB_RECURSE SOURCES src/*)
-add_executable(DrawOfLife ${SOURCES})
+# sources
+file(GLOB_RECURSE SOURCES src/*.c)
+file(GLOB_RECURSE HEADERS src/*.h)
+add_executable(DrawOfLife ${SOURCES} ${HEADERS})
 
-target_link_libraries(DrawOfLife ${SDL2_LIBS})
-if (NOT WIN32)
-    target_link_libraries(DrawOfLife m)
+target_link_libraries(DrawOfLife PRIVATE ${SDL2_LIBS})
+if (NOT MSVC)
+    target_link_libraries(DrawOfLife PRIVATE m)
 endif ()
 
 # copy sdl2 dlls to output folder on windows
-if (WIN32)
+if (MSVC)
     foreach (DLL ${SDL2_DLLS})
         add_custom_command(TARGET DrawOfLife POST_BUILD COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different ${DLL} $<TARGET_FILE_DIR:DrawOfLife>)
