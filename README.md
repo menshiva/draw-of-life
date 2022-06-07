@@ -59,18 +59,7 @@ You can also customize preferences before compilation by modifying [prefs.h](src
 
 #### Windows (Visual Studio)
 
-CMake expects to find the SDL2 headers and libraries in a subfolder named [libs/SDL2](libs/SDL2). You need to
-[download](https://www.libsdl.org/download-2.0.php) latest **SDL2-devel-...-VC.zip** archive and extract its content
-to [libs/SDL2](libs/SDL2) folder, so it should look like this:
-
-```text
-📂libs
- ┗ 📂SDL2
-   ┣ 📂docs
-   ┣ 📂include
-   ┣ 📂lib
-   ┗ ...
-```
+No actions needed.
 
 #### Linux
 
@@ -83,8 +72,8 @@ sudo apt install libsdl2-dev
 ### Build and run the application
 
 ```bash
-mkdir release
-cd release
+mkdir build
+cd build
 cmake .. && make all
 ./DrawOfLife
 ```
